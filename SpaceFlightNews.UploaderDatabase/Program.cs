@@ -51,7 +51,7 @@ Article[] ConvertApiArticlesToArticles(ApiArticle[] apiArticles)
 
 async Task StoreArticlesInDatabase(IMongoDatabase database, Article[] articles)
 {
-    var collection = database.GetCollection<Article>("Articles");
+    var collection = database.GetCollection<Article>("Article");
     await collection.InsertManyAsync(articles);
 }
 
@@ -66,7 +66,7 @@ if (int.TryParse(response.Content, out int articlesNo))
     var database = GetDatabase("Space-Flight-News-Coodesh");
     CreateIndexModel<Article> indexModel = new(Builders<Article>.IndexKeys
         .Ascending((field) => field.Origin));
-    await database.GetCollection<Article>("Articles").Indexes
+    await database.GetCollection<Article>("Article").Indexes
         .CreateOneAsync(indexModel);
     
     await foreach (var articles in RequestArticles(client, articlesNo))

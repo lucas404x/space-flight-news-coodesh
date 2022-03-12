@@ -1,10 +1,16 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using SpaceFlightNews.Infrastructure.Database;
+using SpaceFlightNews.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.Configure<DatabaseSettings>((options) =>
+{
+    options.ConnectionString = builder.Configuration.GetSection("Mongo:ConnectionString").Value;
+    options.DatabaseName = builder.Configuration.GetSection("Mongo:Database").Value;
+});
+
+builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
+builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

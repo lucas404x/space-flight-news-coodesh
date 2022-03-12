@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using SpaceFlightNews.Data.Entities;
 using SpaceFlightNews.Data.Models;
+using SpaceFlightNews.Infrastructure.Repositories;
 
 namespace SpaceFlightNews.Controllers
 {
@@ -7,14 +9,18 @@ namespace SpaceFlightNews.Controllers
     [Route("[controller]")]
     public class ArticlesController : Controller 
     {
-        public ArticlesController() {}
+        private readonly IArticleRepository _articleRepository;
+        public ArticlesController(IArticleRepository articleRepository) 
+        {
+            _articleRepository = articleRepository;
+        }
 
         [HttpGet]
-        public ApiResponse<dynamic> Get() 
+        public async Task<ApiResponse<List<Article>>> Get() 
         {
             return new() 
             {
-                Result = "OK"
+                Result = await _articleRepository.GetAllArticles()
             };
         }
     }
