@@ -13,6 +13,7 @@ namespace SpaceFlightNews.Infrastructure.Repositories
         Task<int> GetUserArticlesCount();
         Task<bool> AddArticle(Article article);
         Task<bool> UpdateArticle(Article updatedArticle);
+        Task<bool> DeleteArticle(string id);
     }
 
     public class ArticleRepository : IArticleRepository
@@ -55,10 +56,16 @@ namespace SpaceFlightNews.Infrastructure.Repositories
         public async Task<bool> UpdateArticle(Article updatedArticle)
         {
             await _collection.FindOneAndReplaceAsync(
-                (article) => article.Id == updatedArticle.Id, 
+                (article) => article.Id == updatedArticle.Id,
                 updatedArticle
             );
-            
+
+            return true;
+        }
+
+        public async Task<bool> DeleteArticle(string id)
+        {
+            await _collection.FindOneAndDeleteAsync((article) => article.Id == new ObjectId(id));
             return true;
         }
     }

@@ -10,6 +10,7 @@ namespace SpaceFlightNews.Services
 		Task<Article> GetArticle(string id);
 		Task<bool> AddArticle(UserArticle article);
 		Task<bool> UpdateArticle(string id, UserArticle article);
+		Task<bool> DeleteArticle(string id);
 	}
 
 	public class ArticleServices : IArticleServices
@@ -58,6 +59,11 @@ namespace SpaceFlightNews.Services
 			updatedArticle.Id = dbArticle.Id;
 
 			return await _articleRepository.UpdateArticle(updatedArticle);
+		}
+
+		public async Task<bool> DeleteArticle(string id) 
+		{
+			return await _articleRepository.DeleteArticle(id);
 		}
 	}
 }

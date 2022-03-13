@@ -80,5 +80,21 @@ namespace SpaceFlightNews.Controllers
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
             };
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ApiResponse<bool>> DeleteAsync(string id) 
+        {
+            Stopwatch _stopwatch = Stopwatch.StartNew();
+            return new()
+            {
+                Result = await _articleServices.DeleteArticle(id),
+                Status = new()
+                {
+                    Code = 200,
+                    Message = "Article updated with successful"
+                },
+                ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
+            };
+        }
     }
 }
