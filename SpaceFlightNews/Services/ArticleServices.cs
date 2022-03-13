@@ -6,6 +6,7 @@ namespace SpaceFlightNews.Services
 	public interface IArticleServices 
 	{
 		Task<List<Article>> GetArticles(int limit, int offset);
+		Task<Article> GetArticle(string id);
 	}
 
 	public class ArticleServices : IArticleServices
@@ -17,11 +18,21 @@ namespace SpaceFlightNews.Services
 			_articleRepository = articleRepository;
 		}
 
-		public async Task<List<Article>> GetArticles(int limit, int offset) 
+        public async Task<List<Article>> GetArticles(int limit, int offset) 
 		{
 			var articles = await _articleRepository.GetArticlesByOffset(offset);
 			return articles.Take(limit).ToList();
 		}
 
+        public async Task<Article> GetArticle(string id)
+        {
+			var article = await _articleRepository.GetArticle(id); 
+			if (article == null) 
+			{
+				throw new NullReferenceException();
+			}
+			
+			return article;
+        }
 	}
 }

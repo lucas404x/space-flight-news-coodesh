@@ -17,7 +17,7 @@ namespace SpaceFlightNews.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResponse<List<Article>>> Get(int? limit, int? offset) 
+        public async Task<ApiResponse<List<Article>>> GetAsync(int? limit, int? offset) 
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
 
@@ -30,6 +30,22 @@ namespace SpaceFlightNews.Controllers
                     Message = "Articles retrieved with successful",
                 },
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
+            };
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ApiResponse<Article>> GetArticleAsync(string id) 
+        {
+            Stopwatch _stopwatch = Stopwatch.StartNew();
+            return new() 
+            {
+                Result = await _articleServices.GetArticle(id),
+                Status = new() 
+                {
+                    Code = 200,
+                    Message = "Article found with successful"
+                },
+                ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds 
             };
         }
     }
