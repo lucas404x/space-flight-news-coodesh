@@ -6,18 +6,19 @@ using MongoDB.Bson;
 
 namespace SpaceFlightNews.Infrastructure.Repositories
 {
-    public interface IArticleRepository 
+    public interface IArticleRepository
     {
-         Task<List<Article>> GetArticlesByOffset(int offset);
-         Task<Article?> GetArticle(string id);
-         Task<int> GetUserArticlesCount();
-         Task<bool> AddArticle(Article article);
+        Task<List<Article>> GetArticlesByOffset(int offset);
+        Task<Article?> GetArticle(string id);
+        Task<int> GetUserArticlesCount();
+        Task<bool> AddArticle(Article article);
+        Task<bool> UpdateArticle(Article updatedArticle);
     }
 
-    public class ArticleRepository: IArticleRepository 
+    public class ArticleRepository : IArticleRepository
     {
         private readonly IMongoCollection<Article> _collection;
-        public ArticleRepository(IDatabaseContext context) 
+        public ArticleRepository(IDatabaseContext context)
         {
             _collection = context.GetCollection<Article>();
         }
@@ -32,11 +33,11 @@ namespace SpaceFlightNews.Infrastructure.Repositories
             var article = await _collection.FindAsync(
                 (article) => article.Id == new ObjectId(id)
             );
-            
+
             return article.FirstOrDefault();
         }
 
-        public async Task<int> GetUserArticlesCount() 
+        public async Task<int> GetUserArticlesCount()
         {
             var allUserArticles = await _collection.FindAsync(
                 (article) => article.Origin == ArticleOrigin.USER
@@ -45,9 +46,19 @@ namespace SpaceFlightNews.Infrastructure.Repositories
             return allUserArticles.ToList().Count;
         }
 
-        public async Task<bool> AddArticle(Article article) 
+        public async Task<bool> AddArticle(Article article)
         {
             await _collection.InsertOneAsync(article);
+            return true;
+        }
+
+        public async Task<bool> UpdateArticle(Article updatedArticle)
+        {
+            await _collection.FindOneAndReplaceAsync(
+                (article) => article.Id == updatedArticle.Id, 
+                updatedArticle
+            );
+            
             return true;
         }
     }
