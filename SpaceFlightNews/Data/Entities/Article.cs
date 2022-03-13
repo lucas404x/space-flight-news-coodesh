@@ -19,7 +19,8 @@ namespace SpaceFlightNews.Data.Entities
 
         public Article() {}
 
-        public Article(ApiArticle article) {
+        public Article(ApiArticle article) 
+        {
             ArticleNum = article.Id;
             Origin = ArticleOrigin.API;
             Featured = article.Featured;

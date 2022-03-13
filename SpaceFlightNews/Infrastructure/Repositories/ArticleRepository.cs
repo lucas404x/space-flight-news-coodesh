@@ -6,7 +6,7 @@ namespace SpaceFlightNews.Infrastructure.Repositories
 {
     public interface IArticleRepository 
     {
-        Task<List<Article>> GetAllArticles();
+         Task<List<Article>> GetArticlesByOffset(int offset);
     }
 
     public class ArticleRepository: IArticleRepository 
@@ -17,9 +17,9 @@ namespace SpaceFlightNews.Infrastructure.Repositories
             _collection = context.GetCollection<Article>();
         }
 
-        public async Task<List<Article>> GetAllArticles()
+        public async Task<List<Article>> GetArticlesByOffset(int offset)
         {
-            return await _collection.AsQueryable().ToListAsync();
+            return await Task.FromResult(_collection.AsQueryable().Skip(offset).ToList());
         }
     }
 }

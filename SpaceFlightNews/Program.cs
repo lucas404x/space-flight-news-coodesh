@@ -1,5 +1,6 @@
 using SpaceFlightNews.Infrastructure.Database;
 using SpaceFlightNews.Infrastructure.Repositories;
+using SpaceFlightNews.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ builder.Services.Configure<DatabaseSettings>((options) =>
 
 builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
+builder.Services.AddScoped<IArticleServices, ArticleServices>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

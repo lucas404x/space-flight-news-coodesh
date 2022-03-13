@@ -1,7 +1,8 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SpaceFlightNews.Data.Entities;
 using SpaceFlightNews.Data.Models;
-using SpaceFlightNews.Infrastructure.Repositories;
+using SpaceFlightNews.Services;
 
 namespace SpaceFlightNews.Controllers
 {
@@ -9,18 +10,26 @@ namespace SpaceFlightNews.Controllers
     [Route("[controller]")]
     public class ArticlesController : Controller 
     {
-        private readonly IArticleRepository _articleRepository;
-        public ArticlesController(IArticleRepository articleRepository) 
+        private readonly IArticleServices _articleServices;
+        public ArticlesController(IArticleServices articleServices) 
         {
-            _articleRepository = articleRepository;
+            _articleServices = articleServices;
         }
 
         [HttpGet]
-        public async Task<ApiResponse<List<Article>>> Get() 
+        public async Task<ApiResponse<List<Article>>> Get(int? limit, int? offset) 
         {
+            Stopwatch _stopwatch = Stopwatch.StartNew();
+
             return new() 
             {
-                Result = await _articleRepository.GetAllArticles()
+                Result = await _articleServices.GetArticles(limit ?? 10, offset ?? 0),
+                Status = new() 
+                {
+                    Code = 200,
+                    Message = "Articles retrieved with successful",
+                },
+                ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
             };
         }
     }
