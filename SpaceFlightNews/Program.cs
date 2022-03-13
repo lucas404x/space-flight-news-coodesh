@@ -1,3 +1,5 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Conventions;
 using SpaceFlightNews.Infrastructure.Database;
 using SpaceFlightNews.Infrastructure.Repositories;
 using SpaceFlightNews.Services;
@@ -13,6 +15,10 @@ builder.Services.Configure<DatabaseSettings>((options) =>
 builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
 builder.Services.AddScoped<IArticleServices, ArticleServices>();
+
+ConventionPack pack = new() { new EnumRepresentationConvention(BsonType.String) };
+ConventionRegistry.Register("EnumStringConvention", pack, t => true);
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
