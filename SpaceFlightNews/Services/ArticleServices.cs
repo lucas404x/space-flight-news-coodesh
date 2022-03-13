@@ -1,4 +1,5 @@
 using SpaceFlightNews.Data.Entities;
+using SpaceFlightNews.Data.Models;
 using SpaceFlightNews.Infrastructure.Repositories;
 
 namespace SpaceFlightNews.Services 
@@ -7,6 +8,7 @@ namespace SpaceFlightNews.Services
 	{
 		Task<List<Article>> GetArticles(int limit, int offset);
 		Task<Article> GetArticle(string id);
+		Task<bool> AddArticle(UserArticle article);
 	}
 
 	public class ArticleServices : IArticleServices
@@ -34,5 +36,11 @@ namespace SpaceFlightNews.Services
 			
 			return article;
         }
+
+		public async Task<bool> AddArticle(UserArticle article) 
+		{
+			var articleNum = await _articleRepository.GetUserArticlesCount() + 1;
+			return await _articleRepository.AddArticle(new(article, articleNum));
+		}
 	}
 }

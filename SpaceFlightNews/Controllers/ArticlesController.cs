@@ -48,5 +48,21 @@ namespace SpaceFlightNews.Controllers
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds 
             };
         }
+
+        [HttpPost]
+        public async Task<ApiResponse<bool>> PostAsync([FromBody] UserArticle article) 
+        {
+            Stopwatch _stopwatch = Stopwatch.StartNew();
+            return new() 
+            {
+                Result = await _articleServices.AddArticle(article),
+                Status = new() 
+                {
+                    Code = 200,
+                    Message = "Article added with successful"
+                },
+                ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds 
+            };
+        }
     }
 }

@@ -1,5 +1,6 @@
 using MongoDB.Driver;
 using SpaceFlightNews.Data.Entities;
+using SpaceFlightNews.Data.Enumerators;
 using SpaceFlightNews.Infrastructure.Database;
 using MongoDB.Bson;
 
@@ -9,11 +10,13 @@ namespace SpaceFlightNews.Infrastructure.Repositories
     {
          Task<List<Article>> GetArticlesByOffset(int offset);
          Task<Article?> GetArticle(string id);
+         Task<int> GetUserArticlesCount();
+         Task<bool> AddArticle(Article article);
     }
 
     public class ArticleRepository: IArticleRepository 
     {
-        private readonly IMongoCollection<Article>? _collection;
+        private readonly IMongoCollection<Article> _collection;
         public ArticleRepository(IDatabaseContext context) 
         {
             _collection = context.GetCollection<Article>();
@@ -31,6 +34,21 @@ namespace SpaceFlightNews.Infrastructure.Repositories
             );
             
             return article.FirstOrDefault();
+        }
+
+        public async Task<int> GetUserArticlesCount() 
+        {
+            var allUserArticles = await _collection.FindAsync(
+                (article) => article.Origin == ArticleOrigin.USER
+            );
+
+            return allUserArticles.ToList().Count;
+        }
+
+        public async Task<bool> AddArticle(Article article) 
+        {
+            await _collection.InsertOneAsync(article);
+            return true;
         }
     }
 }
