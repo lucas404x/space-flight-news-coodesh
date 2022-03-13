@@ -5,7 +5,7 @@ namespace SpaceFlightNews.Infrastructure.Database
 {
     public interface IDatabaseContext 
     {
-        IMongoCollection<T>? GetCollection<T>(); 
+        IMongoCollection<T> GetCollection<T>(); 
     }
 
     public class DatabaseContext : IDatabaseContext

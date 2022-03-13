@@ -7,7 +7,7 @@ namespace SpaceFlightNews.Data.Models
         public long ElapsedTimeInMilliseconds { get; set; }
     }
 
-    public class Status 
+    public class Status
     {
         public int Code { get; set; }
         public string? Message { get; set; }
