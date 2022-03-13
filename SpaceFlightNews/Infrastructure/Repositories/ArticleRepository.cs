@@ -14,6 +14,7 @@ namespace SpaceFlightNews.Infrastructure.Repositories
         Task<bool> AddArticle(Article article);
         Task<bool> UpdateArticle(Article updatedArticle);
         Task<bool> DeleteArticle(string id);
+        Task<Article?> FindArticleByOriginAndNumber(ArticleOrigin origin, int articleNum);
     }
 
     public class ArticleRepository : IArticleRepository
@@ -67,6 +68,17 @@ namespace SpaceFlightNews.Infrastructure.Repositories
         {
             await _collection.FindOneAndDeleteAsync((article) => article.Id == new ObjectId(id));
             return true;
+        }
+
+        public async Task<Article?> FindArticleByOriginAndNumber(ArticleOrigin origin, int articleNum) 
+        {
+            var article = await _collection.FindAsync(
+                (article) => 
+                article.Origin == origin && 
+                article.ArticleNum == articleNum
+            );
+
+            return article.FirstOrDefault();
         }
     }
 }

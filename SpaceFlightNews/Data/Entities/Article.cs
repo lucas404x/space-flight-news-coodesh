@@ -17,8 +17,8 @@ namespace SpaceFlightNews.Data.Entities
         public string? NewsSite { get; set; }
         public string? Summary { get; set; }
         public DateTime? PublishedAt { get; set; }
-        public List<ContentProvider>? Launches { get; set; }
-        public List<ContentProvider>? Events { get; set; }
+        public List<ContentProvider<string>>? Launches { get; set; }
+        public List<ContentProvider<int>>? Events { get; set; }
 
         public Article() {}
 
@@ -53,9 +53,9 @@ namespace SpaceFlightNews.Data.Entities
         }
     }
 
-    public class ContentProvider
+    public class ContentProvider<T>
     {
-        public string? Id { get; set; }
+        public T? Id { get; set; }
         public string? Provider { get; set; }
     }
 }

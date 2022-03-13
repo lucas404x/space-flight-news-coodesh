@@ -12,7 +12,7 @@ namespace SpaceFlightNews.Data.Models
         public string? NewsSite { get; set; }
         public string? Summary { get; set; }
         public DateTime? PublishedAt { get; set; }
-        public List<ContentProvider>? Launches { get; set; }
-        public List<ContentProvider>? Events { get; set; }
+        public List<ContentProvider<string>>? Launches { get; set; }
+        public List<ContentProvider<int>>? Events { get; set; }
     }
 }
