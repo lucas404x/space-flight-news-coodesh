@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<DatabaseSettings>((options) =>
 {
-    options.ConnectionString = builder.Configuration.GetSection("Mongo:ConnectionString").Value;
+    options.ConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ?? "";
     options.DatabaseName = builder.Configuration.GetSection("Mongo:Database").Value;
 });
 

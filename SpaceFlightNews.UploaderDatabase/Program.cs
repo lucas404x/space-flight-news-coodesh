@@ -5,8 +5,7 @@ using SpaceFlightNews.Data.Models;
 
 IMongoDatabase GetDatabase(string database)
 {
-    const string connectionString = "mongodb+srv://noti0nS:lugty321@space-flight-news-coode.xrlqa.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-    var client = new MongoClient(connectionString);
+    var client = new MongoClient(Environment.GetEnvironmentVariable("DB_CONNECTION"));
     return client.GetDatabase(database);
 }
 
