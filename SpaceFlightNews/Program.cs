@@ -5,6 +5,7 @@ using SpaceFlightNews.Infrastructure.Repositories;
 using SpaceFlightNews.Invocables;
 using SpaceFlightNews.Services;
 using Coravel;
+using SpaceFlightNews.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,7 @@ builder.Services.Configure<DatabaseSettings>((options) =>
     options.DatabaseName = builder.Configuration.GetSection("Mongo:Database").Value;
 });
 
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IDatabaseContext, DatabaseContext>();
 builder.Services.AddScoped<IArticleRepository, ArticleRepository>();
@@ -51,6 +53,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.MapControllers();
 
