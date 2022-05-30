@@ -62,7 +62,7 @@ RestResponse response = await client.ExecuteGetAsync(request);
 
 if (int.TryParse(response.Content, out int articlesNo))
 {
-    var database = GetDatabase("Space-Flight-News-Coodesh");
+    var database = GetDatabase("SpaceFlightNewsV2");
     CreateIndexModel<Article> indexModel = new(Builders<Article>.IndexKeys
         .Ascending((field) => field.Origin));
     await database.GetCollection<Article>("Article").Indexes
