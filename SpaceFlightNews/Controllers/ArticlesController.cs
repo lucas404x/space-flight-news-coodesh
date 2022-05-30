@@ -31,6 +31,14 @@ namespace SpaceFlightNews.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetArticleAsync(string id)
         {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new ApiResponse<dynamic>()
+                {
+                    Errors = new List<string>() { "Id cannot be null or empty" }
+                });
+            }
+
             Stopwatch _stopwatch = Stopwatch.StartNew();
             return Ok(new ApiResponse<Article>()
             {
@@ -54,6 +62,16 @@ namespace SpaceFlightNews.Controllers
         public async Task<IActionResult> UpdateAsync(string id, [FromBody] UserArticle updatedArticle)
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new ApiResponse<dynamic>()
+                {
+                    Errors = new List<string>() { "Id cannot be null or empty" },
+                    ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
+                });
+            }
+
             return Ok(new ApiResponse<bool>()
             {
                 Result = await _articleServices.UpdateArticle(id, updatedArticle),
@@ -62,9 +80,19 @@ namespace SpaceFlightNews.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(string id) 
+        public async Task<IActionResult> DeleteAsync(string id)
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest(new ApiResponse<dynamic>()
+                {
+                    Errors = new List<string>() { "Id cannot be null or empty" },
+                    ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
+                });
+            }
+
             return Ok(new ApiResponse<bool>()
             {
                 Result = await _articleServices.DeleteArticle(id),
