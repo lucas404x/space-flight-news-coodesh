@@ -1,11 +1,12 @@
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using SpaceFlightNews.Data.Entities;
 
 namespace SpaceFlightNews.Infrastructure.Database 
 {
     public interface IDatabaseContext 
     {
-        IMongoCollection<T> GetCollection<T>(); 
+        IMongoCollection<T> GetCollection<T>() where T : BaseEntity; 
     }
 
     public class DatabaseContext : IDatabaseContext
@@ -17,7 +18,7 @@ namespace SpaceFlightNews.Infrastructure.Database
             _database = mongoClient.GetDatabase(settings.Value.DatabaseName);
         }
 
-        public IMongoCollection<T> GetCollection<T>()
+        public IMongoCollection<T> GetCollection<T>() where T : BaseEntity
         {
             return _database.GetCollection<T>(typeof(T).Name);
         }

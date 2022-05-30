@@ -17,84 +17,59 @@ namespace SpaceFlightNews.Controllers
         }
 
         [HttpGet]
-        public async Task<ApiResponse<List<Article>>> GetAsync(int? limit, int? offset)
+        public async Task<IActionResult> GetAsync(int? limit, int? offset)
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
 
-            return new()
+            return Ok(new ApiResponse<List<Article>>()
             {
                 Result = await _articleServices.GetArticles(limit ?? 10, offset ?? 0),
-                Status = new()
-                {
-                    Code = 200,
-                    Message = "Articles retrieved with successful",
-                },
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
-            };
+            });
         }
 
         [HttpGet("{id}")]
-        public async Task<ApiResponse<Article>> GetArticleAsync(string id)
+        public async Task<IActionResult> GetArticleAsync(string id)
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
-            return new()
+            return Ok(new ApiResponse<Article>()
             {
                 Result = await _articleServices.GetArticle(id),
-                Status = new()
-                {
-                    Code = 200,
-                    Message = "Article found with successful"
-                },
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
-            };
+            });
         }
 
         [HttpPost]
-        public async Task<ApiResponse<bool>> PostAsync([FromBody] UserArticle article)
+        public async Task<IActionResult> PostAsync([FromBody] UserArticle article)
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
-            return new()
+            return Ok(new ApiResponse<bool>()
             {
                 Result = await _articleServices.AddArticle(article),
-                Status = new()
-                {
-                    Code = 200,
-                    Message = "Article added with successful"
-                },
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
-            };
+            });
         }
 
         [HttpPut("{id}")]
-        public async Task<ApiResponse<bool>> UpdateAsync(string id, [FromBody] UserArticle updatedArticle)
+        public async Task<IActionResult> UpdateAsync(string id, [FromBody] UserArticle updatedArticle)
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
-            return new()
+            return Ok(new ApiResponse<bool>()
             {
                 Result = await _articleServices.UpdateArticle(id, updatedArticle),
-                Status = new()
-                {
-                    Code = 200,
-                    Message = "Article updated with successful"
-                },
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
-            };
+            });
         }
 
         [HttpDelete("{id}")]
-        public async Task<ApiResponse<bool>> DeleteAsync(string id) 
+        public async Task<IActionResult> DeleteAsync(string id) 
         {
             Stopwatch _stopwatch = Stopwatch.StartNew();
-            return new()
+            return Ok(new ApiResponse<bool>()
             {
                 Result = await _articleServices.DeleteArticle(id),
-                Status = new()
-                {
-                    Code = 200,
-                    Message = "Article updated with successful"
-                },
                 ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
-            };
+            });
         }
     }
 }

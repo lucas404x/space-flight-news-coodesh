@@ -11,18 +11,14 @@ public class HomeController : Controller
     public HomeController() {}
 
     [HttpGet]
-    public ApiResponse<string> Get() 
+    public IActionResult Get() 
     {
         Stopwatch _stopwatch = Stopwatch.StartNew();
 
-        return new() 
+        return Ok(new ApiResponse<string>() 
         {
             Result = "Back-end Challenge 2021 🏅 - Space Flight News",
-            Status = new() 
-            {
-                Code = 200
-            },
             ElapsedTimeInMilliseconds = _stopwatch.ElapsedMilliseconds
-        };
+        });
     }
 }
