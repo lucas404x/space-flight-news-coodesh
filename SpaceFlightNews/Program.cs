@@ -6,6 +6,7 @@ using SpaceFlightNews.Invocables;
 using SpaceFlightNews.Services;
 using Coravel;
 using SpaceFlightNews.Middleware;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ builder.Services.Configure<DatabaseSettings>((options) =>
     options.ConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ?? "";
     options.DatabaseName = builder.Configuration.GetSection("Mongo:Database").Value;
 });
+
+MongoDefaults.MaxConnectionIdleTime = TimeSpan.FromSeconds(120);
 
 builder.Services.AddHttpContextAccessor();
 
