@@ -30,10 +30,10 @@ namespace SpaceFlightNews.Services
 
         public async Task<Article> GetArticle(string id)
         {
-			var article = await _articleRepository.GetArticle(id);
-			if (article == null)
+			var article = await _articleRepository.GetArticle(id); 
+			if (article == null) 
 			{
-				throw new NullReferenceException("Article not found");
+				throw new NullReferenceException();
 			}
 			
 			return article;
@@ -41,11 +41,6 @@ namespace SpaceFlightNews.Services
 
 		public async Task<bool> AddArticle(UserArticle article) 
 		{
-			if (article == null) 
-			{
-				throw new ArgumentNullException("Article cannot be null");
-			}
-
 			var articleNum = await _articleRepository.GetUserArticlesCount() + 1;
 			return await _articleRepository.AddArticle(new(article, articleNum));
 		}
@@ -55,10 +50,10 @@ namespace SpaceFlightNews.Services
 			Article? dbArticle = await _articleRepository.GetArticle(id);
 			if (dbArticle == null) 
 			{
-				throw new NullReferenceException("Article doesn't exists.");
+				throw new NullReferenceException();
 			}
 			
-			var updatedArticle = new Article(userArticle, dbArticle.ArticleNum);
+			Article updatedArticle = new(userArticle, dbArticle.ArticleNum);
 			updatedArticle.ArticleNum = dbArticle.ArticleNum;
 			updatedArticle.Origin = dbArticle.Origin;
 			updatedArticle.Id = dbArticle.Id;
