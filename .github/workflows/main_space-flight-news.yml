@@ -8,9 +8,14 @@ on:
     branches:
       - main
   workflow_dispatch:
-
+  
+  
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ${{ GITHUB_WORKSPACE }}\SpaceFlightNews
+        
     runs-on: windows-latest
 
     steps:
