@@ -10,9 +10,10 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.Configure<DatabaseSettings>((options) =>
 {
-    options.ConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION") ?? "";
+    options.ConnectionString = builder.Configuration.GetConnectionString("Default");
     options.DatabaseName = builder.Configuration.GetSection("Mongo:Database").Value;
 });
 
